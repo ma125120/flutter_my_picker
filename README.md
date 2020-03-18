@@ -1,5 +1,8 @@
 # flutter_my_picker
 
+![GitHub](https://img.shields.io/github/license/ma125120/flutter_my_picker.svg)
+[![GitHub stars](https://img.shields.io/github/stars/ma125120/flutter_my_picker.svg?style=social&label=Stars)](https://github.com/ma125120/flutter_my_picker)
+
 适用于flutter的有关日期和时间的选择器，支持年份(showYearPicker)、月份(showMonthPicker)、日期(showDatePicker)、时间(showTimePicker)、日期时间(showDateTimePicker)等。
 
 > 支持的平台
@@ -11,11 +14,12 @@
 ## 使用方法
 
 ### 依赖安装
-版本号可自行查看 ```pubspec.yaml```确定
+- 发布到pub.dev还得翻墙，验证域名，没办法只能走git了
 ```
 dependencies:
   ...
-  flutter_my_picker: ^0.0.1
+  flutter_my_picker: 
+    git: git@github.com:ma125120/flutter_my_picker.git
 ```
 
 ### [使用案例](./example/lib/demo.dart)
