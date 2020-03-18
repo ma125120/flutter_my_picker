@@ -14,13 +14,17 @@ class _DemoPageState extends State<DemoPage> {
   @override
   void initState() {
     super.initState();
+    DateTime _date = new DateTime.now();
+    print(MyDate.format('yyyy-MM-dd HH:mm:ss', _date));
     setState(() {
-      date = MyDate.getNow();
+      date = _date;
+      dateStr = MyDate.format('yyyy-MM-dd HH:mm:ss', _date);
     });
   }
 
   _change(formatString) {
     return (_date) {
+      print(MyDate.format(formatString, _date));
       setState(() {
         date = _date;
         dateStr = MyDate.format(formatString, _date);
@@ -45,11 +49,46 @@ class _DemoPageState extends State<DemoPage> {
           child: Text('当前时间： ${dateStr ?? MyDate.format('yyyy-MM-dd HH:mm:ss', date)}', textAlign: TextAlign.center,),
         ),
 
-        _Button('月份选择器', () {
-          MyPicker.showMonthPicker(
+         _Button('年份选择器', () {
+          MyPicker.showPicker(
             context: context,
             current: date,
+            mode: MyPickerMode.year,
+            onChange: _change('yyyy'),
+          );
+        }),
+
+        _Button('月份选择器', () {
+          MyPicker.showPicker(
+            context: context,
+            current: date,
+            mode: MyPickerMode.month,
             onChange: _change('yyyy-MM'),
+          );
+        }),
+
+        _Button('日期选择器', () {
+          MyPicker.showPicker(
+            context: context,
+            current: date,
+            mode: MyPickerMode.date,
+            onChange: _change('yyyy-MM-dd'),
+          );
+        }),
+
+        _Button('时间选择器', () {
+          MyPicker.showPicker(
+            context: context,
+            current: date,
+            mode: MyPickerMode.time,
+            onChange: _change('HH:mm'),
+          );
+        }),
+        _Button('日期时间选择器', () {
+          MyPicker.showDateTimePicker(
+            context: context,
+            current: date,
+            onChange: _change('yyyy-MM-dd HH:mm'),
           );
         }),
       ],

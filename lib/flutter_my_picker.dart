@@ -11,17 +11,38 @@ typedef DateChangedCallback(DateTime time);
 typedef String StringAtIndexCallBack(int index);
 
 class MyPicker {
-  static showMonthPicker({
+  /// 调起各种模式的时间类型选择器
+  /// 
+  /// context 调用 showModalBottomSheet 所需
+  /// 
+  /// height 选择器面板的高度，默认216
+  /// 
+  /// mode MyPickerMode
+  /// // 选择器模式
+  /// enum MyPickerMode {
+  ///  year,
+  ///  month,
+  ///  date,
+  ///  time,
+  ///  dateTime,
+  /// }
+  /// 
+  /// onChange  typedef DateChangedCallback(DateTime time)
+  /// 
+  /// current 当前选中的时间，字符串和DateTime类型皆可，内部做了解析
+  static showPicker({
     BuildContext context, 
     double height = 216,
+    MyPickerMode mode = MyPickerMode.date,
     DateChangedCallback onChange,
     current,
   }) async {
     _showBottom(
       context: context,
-      child: MyMonthPicker(
+      child: MyDatePicker(
         height: height,
         current: current,
+        mode: mode,
         onChange: onChange ?? (date) {
           print('选中日期: ${MyDate.format('yyyy-MM-dd', date)}');
         }
@@ -29,9 +50,83 @@ class MyPicker {
       height: height,
     );
   }
+
+  static showYearPicker({
+    BuildContext context, 
+    double height = 216,
+    DateChangedCallback onChange,
+    current,
+  }) {
+    return MyPicker.showPicker(
+      context: context,
+      height: height,
+      mode: MyPickerMode.year,
+      onChange: onChange,
+      current: current,
+    );
+  }
+
+  static showMonthPicker({
+    BuildContext context, 
+    double height = 216,
+    DateChangedCallback onChange,
+    current,
+  }) {
+    return MyPicker.showPicker(
+      context: context,
+      height: height,
+      mode: MyPickerMode.month,
+      onChange: onChange,
+      current: current,
+    );
+  }
+
+  static showDatePicker({
+    BuildContext context, 
+    double height = 216,
+    DateChangedCallback onChange,
+    current,
+  }) {
+    return MyPicker.showPicker(
+      context: context,
+      height: height,
+      mode: MyPickerMode.date,
+      onChange: onChange,
+      current: current,
+    );
+  }
+
+  static showTimePicker({
+    BuildContext context, 
+    double height = 216,
+    DateChangedCallback onChange,
+    current,
+  }) {
+    return MyPicker.showPicker(
+      context: context,
+      height: height,
+      mode: MyPickerMode.time,
+      onChange: onChange,
+      current: current,
+    );
+  }
+  static showDateTimePicker({
+    BuildContext context, 
+    double height = 216,
+    DateChangedCallback onChange,
+    current,
+  }) {
+    return MyPicker.showPicker(
+      context: context,
+      height: height,
+      mode: MyPickerMode.dateTime,
+      onChange: onChange,
+      current: current,
+    );
+  }
 }
 
-class MyMonthPicker extends StatefulWidget {
+class MyDatePicker extends StatefulWidget {
   final DateTime now = new DateTime.now();
 
   final double height;
@@ -39,26 +134,31 @@ class MyMonthPicker extends StatefulWidget {
   final DateChangedCallback onChange;
   final MyPickerMode mode;
 
-  MyMonthPicker({ current, this.height = 216, this.onChange, this.mode = MyPickerMode.date }): 
+  MyDatePicker({ current, this.height = 216, this.onChange, this.mode = MyPickerMode.date }): 
     this.current = current != null ? MyDate.parse(current) : MyDate.getNow();
   
-  get yearIndex => current.year - now.year;
-  get monthIndex => current.month - 1;
-  get dayIndex => current.day - 1;
+  get hideYear => mode == MyPickerMode.time;
+  get hideMonth => mode == MyPickerMode.year || mode == MyPickerMode.time;
+  get hideDay => mode == MyPickerMode.year || mode == MyPickerMode.month || mode == MyPickerMode.time;
+  get hideTime => mode == MyPickerMode.year || mode == MyPickerMode.month || mode == MyPickerMode.date;
 
   @override
-  _MyMonthPickerState createState() => _MyMonthPickerState();
+  _MyDatePickerState createState() => _MyDatePickerState();
 }
 
-class _MyMonthPickerState extends State<MyMonthPicker> {
+class _MyDatePickerState extends State<MyDatePicker> {
   final DateTime now = new DateTime.now();
   int yearIndex = 0;
   int monthIndex = 0;
   int dayIndex = 0;
-  List dayList = [];
-  FixedExtentScrollController yearScrollCtrl, monthScrollCtrl, dayScrollCtrl;
+  int hourIndex = 0;
+  int minuteIndex = 0;
+  
+  // 如果是手动滚动，不要触发onChange
+  bool isScroll = false;
+  FixedExtentScrollController yearScrollCtrl, monthScrollCtrl, dayScrollCtrl, hourScrollCtrl, minuteScrollCtrl;
 
-  get _realDate => new DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1);
+  get _realDate => new DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1, hourIndex, minuteIndex);
   get days => MyDate.daysInMonth(_realDate);
 
   int getDays() {
@@ -73,6 +173,8 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
   }
   @override
   void dispose() {
+    hourScrollCtrl.dispose();
+    minuteScrollCtrl.dispose();
     dayScrollCtrl.dispose();
     yearScrollCtrl.dispose();
     monthScrollCtrl.dispose();
@@ -80,26 +182,22 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
   }
 
   void refreshScrollOffset() {
+    yearIndex = widget.current.year - now.year;
+    monthIndex = widget.current.month - 1;
+    dayIndex = widget.current.day - 1;
+    hourIndex = widget.current.hour;
+    minuteIndex = widget.current.minute;
+
     yearScrollCtrl = new FixedExtentScrollController(
-        initialItem: widget.yearIndex);
+        initialItem: yearIndex);
     monthScrollCtrl = new FixedExtentScrollController(
-        initialItem: widget.monthIndex);
+        initialItem: monthIndex);
     dayScrollCtrl = new FixedExtentScrollController(
-        initialItem: widget.dayIndex);
-    
-    setState(() {
-      yearIndex = yearIndex;
-      monthIndex = monthIndex;
-    });
-
-    _fillDayList();
-  }
-
-  _fillDayList() {
-    setState(() {
-      dayList = List.generate(getDays(), (index) => (index + 1).toString() + '日');
-    });
-    
+        initialItem: dayIndex);
+    hourScrollCtrl = new FixedExtentScrollController(
+        initialItem: hourIndex);
+    minuteScrollCtrl = new FixedExtentScrollController(
+        initialItem: minuteIndex);
   }
 
   changeYear(index) {
@@ -134,14 +232,25 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
 
   setDay() {
     int days = getDays();
-    
-    if (dayIndex >= days) {
-      setState(() {
-        dayIndex = days - 1;
-      });
-      dayScrollCtrl.animateToItem(days - 1, duration: Duration(milliseconds: 20), curve: Curves.easeInOut);
+
+    if (dayIndex < days) {
+      /**
+       * 防止从02/28到03/28不显示后面的数字，触发滚动显示数字
+       * 原地滚动不显示，所以先向上滚动，此时dayIndex会从28变成27
+       * 再向下滚动，此时dayIndex则会从27变成28
+       */
+      isScroll = true;
+      dayScrollCtrl.jumpToItem(dayIndex - 1);
+      dayScrollCtrl.jumpToItem(dayIndex + 1);
+      isScroll = false;
+    } else {
+      /**
+       * 从03/30到2月份的时候，由于2月份不存在30号，所以显示到2月的最后一天
+       */
+      isScroll = true;
+      dayScrollCtrl.jumpToItem(days - 1);
+      isScroll = false;
     }
-    _fillDayList();
   }
   changeDay(index) {
     if (index == dayIndex) return ;
@@ -151,15 +260,47 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
     });
   }
   String stringIndexByDay(int index) {
-    if (index >= 0 && index < dayList.length) {
-      return dayList[index];
+    int days = getDays();
+    if (index >= 0 && index < days) {
+      return (index + 1).toString() + '日';
+    }
+    return null;
+  }
+
+  changeHour(index) {
+    if (index == hourIndex) return ;
+    
+    setState(() {
+      hourIndex = index;
+    });
+  }
+  String stringIndexByHour(int index) {
+    if (index >= 0 && index < 24) {
+      return index.toString().padLeft(2, '0') + '时';
+    }
+    return null;
+  }
+  changeMinute(index) {
+    if (index == minuteIndex) return ;
+    
+    setState(() {
+      minuteIndex = index;
+    });
+  }
+  String stringIndexByMinute(int index) {
+    if (index >= 0 && index < 60) {
+      return index.toString().padLeft(2, '0') + '分';
     }
     return null;
   }
 
   changeDate(int _) {
-    DateTime date = new DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1);
-    widget.onChange(date);
+    int days = MyDate.daysInMonth(new DateTime(now.year + yearIndex, monthIndex + 1));
+    // 如果天数在本月内并且不是手动滚动中
+    if (dayIndex < days && !isScroll) {
+      DateTime date = new DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1, hourIndex, minuteIndex);
+      widget.onChange(date);
+    }
   }
 
   Widget _renderColumnView(
@@ -168,10 +309,11 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
       ScrollController scrollController,
       ValueChanged<int> selectedChangedWhenScrolling,
       ValueChanged<int> selectedChangedWhenScrollEnd}) {
+  
     return Expanded(
       // flex: layoutProportion,
       child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(6.0),
           height: widget.height, // theme.containerHeight
           decoration:
               BoxDecoration(color: Colors.white),
@@ -217,30 +359,44 @@ class _MyMonthPickerState extends State<MyMonthPicker> {
   @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
-      _renderColumnView(
+      if (!widget.hideYear) _renderColumnView(
         scrollController: yearScrollCtrl,
         selectedChangedWhenScrollEnd: changeDate,
         selectedChangedWhenScrolling: changeYear,
         stringAtIndexCB: stringIndexByYear,
       ),
-      _renderColumnView(
+      if (!widget.hideMonth) _renderColumnView(
         scrollController: monthScrollCtrl,
         selectedChangedWhenScrollEnd: changeDate,
         selectedChangedWhenScrolling: changeMonth,
         stringAtIndexCB: stringIndexByMonth,
       ),
-      _renderColumnView(
+      if (!widget.hideDay) _renderColumnView(
         scrollController: dayScrollCtrl,
         selectedChangedWhenScrollEnd: changeDate,
         selectedChangedWhenScrolling: changeDay,
         stringAtIndexCB: stringIndexByDay,
+      ),
+
+      if (!widget.hideTime) _renderColumnView(
+        scrollController: hourScrollCtrl,
+        selectedChangedWhenScrollEnd: changeDate,
+        selectedChangedWhenScrolling: changeHour,
+        stringAtIndexCB: stringIndexByHour,
+      ),
+      if (!widget.hideTime) _renderColumnView(
+        scrollController: minuteScrollCtrl,
+        selectedChangedWhenScrollEnd: changeDate,
+        selectedChangedWhenScrolling: changeMinute,
+        stringAtIndexCB: stringIndexByMinute,
       ),
     ],);
   }
 }
 
 Future _showBottom({
-  BuildContext context, Widget child,
+  BuildContext context, 
+  Widget child,
   double height = 216,
 }) async {
   return await showModalBottomSheet(context: context,
