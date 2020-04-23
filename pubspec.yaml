@@ -4,7 +4,7 @@ version: 0.0.1
 homepage: https://github.com/ma125120/flutter_my_picker
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
   intl: ^0.16.1

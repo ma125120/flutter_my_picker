@@ -117,9 +117,17 @@ final double height;
 // 当前选中的时间，字符串和DateTime类型皆可，内部做了解析
 final dynamic current;
 
-// 选中时间结束之后的回调，
+// 选中时间结束之后的回调，当滚动未结束时关闭弹窗就不会触发
 //typedef DateChangedCallback(DateTime time)
 final DateChangedCallback onChange;
+
+// 点击确认按钮之后的回调
+//typedef DateChangedCallback(DateTime time)
+final DateChangedCallback onConfirm;
+
+// 点击取消按钮之后的回调
+//typedef CancelCallback()
+final CancelCallback onCancel;
 
 // 选择器模式
 // enum MyPickerMode {

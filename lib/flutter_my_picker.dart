@@ -8,6 +8,7 @@ export './types/index.dart';
 import './common/date.dart';
 
 typedef DateChangedCallback(DateTime time);
+typedef CancelCallback();
 typedef String StringAtIndexCallBack(int index);
 
 class MyPicker {
@@ -35,6 +36,8 @@ class MyPicker {
     double height = 216,
     MyPickerMode mode = MyPickerMode.date,
     DateChangedCallback onChange,
+    DateChangedCallback onConfirm,
+    CancelCallback onCancel,
     current,
   }) async {
     _showBottom(
@@ -43,6 +46,8 @@ class MyPicker {
         height: height,
         current: current,
         mode: mode,
+        onCancel: onCancel ?? () {},
+        onConfirm: onConfirm ?? (date) {},
         onChange: onChange ?? (date) {
           print('选中日期: ${MyDate.format('yyyy-MM-dd', date)}');
         }
@@ -132,9 +137,11 @@ class MyDatePicker extends StatefulWidget {
   final double height;
   final DateTime current;
   final DateChangedCallback onChange;
+  final DateChangedCallback onConfirm;
+  final CancelCallback onCancel;
   final MyPickerMode mode;
 
-  MyDatePicker({ current, this.height = 216, this.onChange, this.mode = MyPickerMode.date }): 
+  MyDatePicker({ current, this.height = 216, this.onChange, this.onConfirm, this.onCancel, this.mode = MyPickerMode.date }): 
     this.current = current != null ? MyDate.parse(current) : MyDate.getNow();
   
   get hideYear => mode == MyPickerMode.time;
@@ -147,6 +154,7 @@ class MyDatePicker extends StatefulWidget {
 }
 
 class _MyDatePickerState extends State<MyDatePicker> {
+  final padding = EdgeInsets.all(6.0);
   final DateTime now = new DateTime.now();
   int yearIndex = 0;
   int monthIndex = 0;
@@ -303,17 +311,23 @@ class _MyDatePickerState extends State<MyDatePicker> {
     }
   }
 
+  onConfirm() {
+    DateTime date = new DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1, hourIndex, minuteIndex);
+    widget.onConfirm(date);
+    Navigator.of(context).pop();
+  }
+
   Widget _renderColumnView(
       {ValueKey key,
       StringAtIndexCallBack stringAtIndexCB,
       ScrollController scrollController,
       ValueChanged<int> selectedChangedWhenScrolling,
       ValueChanged<int> selectedChangedWhenScrollEnd}) {
-  
+
     return Expanded(
       // flex: layoutProportion,
       child: Container(
-          padding: EdgeInsets.all(6.0),
+          padding: padding,
           height: widget.height, // theme.containerHeight
           decoration:
               BoxDecoration(color: Colors.white),
@@ -358,6 +372,37 @@ class _MyDatePickerState extends State<MyDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      renderHeader(),
+      renderSheet(context),
+    ],);
+  }
+
+  Widget renderHeader() {
+    return Row(
+      children: <Widget>[
+        FlatButton(
+          textColor: Color(0xFF999999),
+          child: Text('取消'),
+          onPressed: () {
+            widget.onCancel();
+            Navigator.of(context).pop();
+          },
+        ),
+
+        FlatButton(
+          textColor: Theme.of(context).primaryColor,
+          child: Text('确认'),
+          onPressed: () {
+            onConfirm();
+          },
+        ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    );
+  }
+
+  Widget renderSheet(BuildContext context) {
     return Row(children: <Widget>[
       if (!widget.hideYear) _renderColumnView(
         scrollController: yearScrollCtrl,
@@ -399,10 +444,11 @@ Future _showBottom({
   Widget child,
   double height = 216,
 }) async {
-  return await showModalBottomSheet(context: context,
+  return await showModalBottomSheet(
+    context: context,
     backgroundColor: Colors.transparent,
     builder: (_) => Container(
-      height: height,
+      height: height + 48,
       // margin: EdgeInsets.only(top: 16.0),
       child: child,
       decoration: BoxDecoration(
