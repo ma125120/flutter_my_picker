@@ -14,13 +14,15 @@
 ## 使用方法
 
 ### 依赖安装
-- 发布到pub.dev还得翻墙，验证域名，没办法只能走git了
+
+- 已发布到pub，可直接使用版本号进行下载
 ```
 dependencies:
   ...
-  flutter_my_picker: 
-    git: git@github.com:ma125120/flutter_my_picker.git
+  flutter_my_picker: ^0.0.2
 ```
+
+如果你想自己发布包，但是发布的时候报错，可以看这里[发布教程](https://github.com/ma125120/study_note/blob/master/flutter/pub.md)
 
 ### [使用案例](./example/lib/demo.dart)
 

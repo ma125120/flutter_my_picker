@@ -14,6 +14,7 @@ class MyDate {
   static DateTime getNow() {
     return new DateTime.now();
   }
+
   static DateTime parse([date]) {
     return date.runtimeType == DateTime ? date : DateTime.tryParse(date);
   }
@@ -24,6 +25,7 @@ class MyDate {
   static int daysInMonth(DateTime date) {
     return DateTime(date.year, date.month + 1, 0).day;
   }
+
   /*
    * newPattern 日期格式化字符串,比如'yyyy-MM-dd'
    * date DateTime 或者 字符串 2020-03-17 等
@@ -43,4 +45,3 @@ class MyDate {
         day1.day == day2.day;
   }
 }
-

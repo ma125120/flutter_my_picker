@@ -1,6 +1,6 @@
 name: flutter_my_picker
-description: 适用于flutter的有关日期和时间的选择器.
-version: 0.0.1
+description: "flutter date picker & time picker, includes showYearPicker, showMonthPicker, showDatePicker, showTimePicker, showDateTimePicker. demo: https://github.com/ma125120/flutter_my_picker/blob/master/gif/1.gif"
+version: 0.0.2
 homepage: https://github.com/ma125120/flutter_my_picker
 
 environment:
