@@ -46,6 +46,12 @@ class MyPicker {
   /// start 开始时间，不传时表示不限制，mode 为 time 时， 可直接传入 '20:12' 的字符串
   ///
   /// end 结束时间，不传时表示不限制，mode 为 time 时， 可直接传入 '20:12' 的字符串
+  ///
+  /// squeeze 挤压系数，默认 1, 建议设置 1.45
+  ///
+  /// magnification 被选中的内容放大系数，默认 1, 建议设置 1.2
+  ///
+  /// offAxisFraction 被选中的内容偏移，默认 0, 建议设置 0.2
   static showPicker({
     BuildContext context,
     double itemHeight = 36,
@@ -53,7 +59,10 @@ class MyPicker {
     DateChangedCallback onChange,
     DateChangedCallback onConfirm,
     CancelCallback onCancel,
-    bool isShowHeader,
+    bool isShowHeader = true,
+    double magnification = 1,
+    double offAxisFraction = 0,
+    double squeeze = 1,
     current,
     start,
     end,
@@ -66,6 +75,9 @@ class MyPicker {
           start: start,
           end: end,
           mode: mode,
+          magnification: magnification,
+          squeeze: squeeze,
+          offAxisFraction: offAxisFraction,
           isShowHeader: isShowHeader,
           onCancel: onCancel ?? () {},
           onConfirm: onConfirm ?? (date) {},
@@ -84,6 +96,9 @@ class MyPicker {
     current,
     start,
     end,
+    double magnification,
+    double offAxisFraction = 0,
+    double squeeze = 1,
   }) {
     return MyPicker.showPicker(
       context: context,
@@ -91,7 +106,10 @@ class MyPicker {
       mode: MyPickerMode.year,
       onChange: onChange,
       current: current,
+      squeeze: squeeze,
+      offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
+      magnification: magnification,
       onCancel: onCancel ?? () {},
       onConfirm: onConfirm ?? (date) {},
     );
@@ -108,6 +126,9 @@ class MyPicker {
     current,
     start,
     end,
+    double magnification,
+    double offAxisFraction = 0,
+    double squeeze = 1,
   }) {
     return MyPicker.showPicker(
       context: context,
@@ -115,7 +136,10 @@ class MyPicker {
       mode: MyPickerMode.month,
       onChange: onChange,
       current: current,
+      squeeze: squeeze,
+      offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
+      magnification: magnification,
       onCancel: onCancel ?? () {},
       onConfirm: onConfirm ?? (date) {},
     );
@@ -132,6 +156,9 @@ class MyPicker {
     current,
     start,
     end,
+    double magnification,
+    double offAxisFraction = 0,
+    double squeeze = 1,
   }) {
     return MyPicker.showPicker(
       context: context,
@@ -140,6 +167,9 @@ class MyPicker {
       onChange: onChange,
       current: current,
       isShowHeader: isShowHeader,
+      squeeze: squeeze,
+      offAxisFraction: offAxisFraction,
+      magnification: magnification,
       onCancel: onCancel ?? () {},
       onConfirm: onConfirm ?? (date) {},
     );
@@ -156,6 +186,9 @@ class MyPicker {
     current,
     start,
     end,
+    double magnification,
+    double offAxisFraction = 0,
+    double squeeze = 1,
   }) {
     return MyPicker.showPicker(
       context: context,
@@ -163,7 +196,10 @@ class MyPicker {
       mode: MyPickerMode.time,
       onChange: onChange,
       current: current,
+      squeeze: squeeze,
+      offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
+      magnification: magnification,
       onCancel: onCancel ?? () {},
       onConfirm: onConfirm ?? (date) {},
     );
@@ -180,6 +216,9 @@ class MyPicker {
     current,
     start,
     end,
+    double magnification,
+    double offAxisFraction = 0,
+    double squeeze = 1,
   }) {
     return MyPicker.showPicker(
       context: context,
@@ -188,6 +227,9 @@ class MyPicker {
       onChange: onChange,
       current: current,
       isShowHeader: isShowHeader,
+      squeeze: squeeze,
+      offAxisFraction: offAxisFraction,
+      magnification: magnification,
       onCancel: onCancel ?? () {},
       onConfirm: onConfirm ?? (date) {},
     );

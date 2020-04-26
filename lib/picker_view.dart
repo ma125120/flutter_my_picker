@@ -27,12 +27,18 @@ class MyDatePicker extends StatefulWidget {
   final CancelCallback onCancel;
   final MyPickerMode mode;
   final bool isShowHeader;
+  final double magnification;
+  final double offAxisFraction;
+  final double squeeze;
 
   MyDatePicker(
       {current,
       start,
       end,
       this.itemHeight = 36,
+      this.magnification = 1.2,
+      this.offAxisFraction = 0.2,
+      this.squeeze = 1.45,
       this.onChange,
       this.onConfirm,
       this.onCancel,
@@ -437,7 +443,9 @@ class _MyDatePickerState extends State<MyDatePicker> {
                     selectedChangedWhenScrolling(index);
                   },
                   useMagnifier: true,
-                  magnification: 1.2,
+                  magnification: widget.magnification,
+                  squeeze: widget.squeeze,
+                  offAxisFraction: widget.offAxisFraction,
                   itemBuilder: (BuildContext context, int index) {
                     final content = stringAtIndexCB(index);
                     if (content == null) {

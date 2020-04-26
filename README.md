@@ -145,4 +145,13 @@ final MyPickerMode mode;
 
 // 选择器单行的高度，默认36
 final double itemHeight;
+
+/// 挤压系数，默认 1, 建议设置 1.45
+final double squeeze;
+
+/// 被选中的内容放大系数，默认 1, 建议设置 1.2
+final double magnification;
+
+/// 被选中的内容偏移，默认 0, 建议设置 0.2
+final double offAxisFraction; 
 ```

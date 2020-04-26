@@ -72,8 +72,8 @@ class _DemoPageState extends State<DemoPage> {
             current: date,
             mode: MyPickerMode.date,
             isShowHeader: false,
-            start: '2012-08-12',
-            end: '2025-02-09',
+            // start: '2012-08-12',
+            // end: '2025-02-09',
             onChange: _change('yyyy-MM-dd'),
           );
         }),
@@ -82,8 +82,8 @@ class _DemoPageState extends State<DemoPage> {
             context: context,
             current: date,
             mode: MyPickerMode.time,
-            start: '00:20',
-            end: '21:40',
+            // start: '00:20',
+            // end: '21:40',
             onChange: _change('HH:mm'),
           );
         }),
@@ -91,6 +91,9 @@ class _DemoPageState extends State<DemoPage> {
           MyPicker.showDateTimePicker(
             context: context,
             current: date,
+            magnification: 1.2,
+            squeeze: 1.45,
+            offAxisFraction: 0.2,
             onChange: _change('yyyy-MM-dd HH:mm'),
           );
         }),

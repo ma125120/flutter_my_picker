@@ -1,5 +1,7 @@
-## 1.0.1
-* 选中项放大
+## 1.0.2
+* magnification
+* squeeze
+* offAxisFraction
 
 ## 1.0.0
 * 添加确认和取消按钮，添加onConfirm 和 onCancel 回调，通过 isShowHeader 属性控制是否显示，
