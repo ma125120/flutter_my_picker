@@ -1,6 +1,6 @@
 name: flutter_my_picker
 description: "flutter date picker & time picker. demo: https://github.com/ma125120/flutter_my_picker/blob/master/gif/1.gif"
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/ma125120/flutter_my_picker
 
 environment:
