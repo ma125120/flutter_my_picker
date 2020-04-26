@@ -105,7 +105,6 @@ MyPicker.showPicker(
 
 调用 ```MyPicker.showPicker``` 方法调起相关选择器，目前的参数有
 
-
 ### API
 MyPicker.showPicker所需要的的参数：
 
@@ -113,11 +112,12 @@ MyPicker.showPicker所需要的的参数：
 // 调用 showModalBottomSheet 所需
 BuildContext context;
 
-// 选择器面板的高度，默认216
-final double height;
-
-// 当前选中的时间，字符串和DateTime类型皆可，内部做了解析
+// 当前选中的时间，字符串和DateTime类型皆可，内部做了解析，mode 为 time 时， 可直接传入 '20:12' 的字符串
 final dynamic current;
+/// 开始时间，不传时表示不限制，mode 为 time 时， 可直接传入 '20:12' 的字符串
+final dynamic start;
+/// 结束时间，不传时表示不限制，mode 为 time 时， 可直接传入 '20:12' 的字符串
+final dynamic end;
 
 // 选中时间结束之后的回调，当滚动未结束时关闭弹窗就不会触发
 //typedef DateChangedCallback(DateTime time)
@@ -132,12 +132,17 @@ final DateChangedCallback onConfirm;
 final CancelCallback onCancel;
 
 // 选择器模式
-// enum MyPickerMode {
-//  year,
-//  month,
-//  date,
-//  time,
-//  dateTime,
-//}
+/**
+enum MyPickerMode {
+  year,
+  month,
+  date,
+  time,
+  dateTime,
+}
+*/
 final MyPickerMode mode;
+
+// 选择器单行的高度，默认36
+final double itemHeight;
 ```

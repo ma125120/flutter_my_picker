@@ -31,6 +31,7 @@ class _DemoPageState extends State<DemoPage> {
       });
     };
   }
+
   changeDate(_date) {
     setState(() {
       date = _date;
@@ -41,15 +42,16 @@ class _DemoPageState extends State<DemoPage> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(top: 8.0),
           width: MediaQuery.of(context).size.width,
-          child: Text('当前时间： ${dateStr ?? MyDate.format('yyyy-MM-dd HH:mm:ss', date)}', textAlign: TextAlign.center,),
+          child: Text(
+            '当前时间： ${dateStr ?? MyDate.format('yyyy-MM-dd HH:mm:ss', date)}',
+            textAlign: TextAlign.center,
+          ),
         ),
-
-         _Button('年份选择器', () {
+        _Button('年份选择器', () {
           MyPicker.showPicker(
             context: context,
             current: date,
@@ -57,30 +59,31 @@ class _DemoPageState extends State<DemoPage> {
             onChange: _change('yyyy'),
           );
         }),
-
         _Button('月份选择器', () {
           MyPicker.showPicker(
-            context: context,
-            current: date,
-            mode: MyPickerMode.month,
-            onChange: _change('yyyy-MM'),
-          );
+              context: context,
+              current: date,
+              mode: MyPickerMode.month,
+              onChange: _change('yyyy-MM'));
         }),
-
         _Button('日期选择器', () {
           MyPicker.showPicker(
             context: context,
             current: date,
             mode: MyPickerMode.date,
+            isShowHeader: false,
+            start: '2012-08-12',
+            end: '2025-02-09',
             onChange: _change('yyyy-MM-dd'),
           );
         }),
-
         _Button('时间选择器', () {
           MyPicker.showPicker(
             context: context,
             current: date,
             mode: MyPickerMode.time,
+            start: '00:20',
+            end: '21:40',
             onChange: _change('HH:mm'),
           );
         }),
@@ -102,10 +105,16 @@ class _Button extends StatelessWidget {
   final OnChangeButton onPressed;
   final String text;
 
-  _Button( this.text, this.onPressed, );
+  _Button(
+    this.text,
+    this.onPressed,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(onPressed: onPressed, child: Text(text),);
+    return RaisedButton(
+      onPressed: onPressed,
+      child: Text(text),
+    );
   }
 }

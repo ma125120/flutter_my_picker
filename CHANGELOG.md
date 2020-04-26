@@ -1,3 +1,7 @@
+## 1.0.0
+* 添加确认和取消按钮，添加onConfirm 和 onCancel 回调，通过 isShowHeader 属性控制是否显示，
+* 添加 start 和 end 属性设置开始和结束时间
+
 ## 0.0.3
 
 * 添加CHANGELOG.md
