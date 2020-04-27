@@ -52,6 +52,11 @@ class MyPicker {
   /// magnification 被选中的内容放大系数，默认 1, 建议设置 1.2
   ///
   /// offAxisFraction 被选中的内容偏移，默认 0, 建议设置 0.2
+  ///
+  /// color 字体颜色
+  ///
+  /// background 背景颜色
+  ///
   static showPicker({
     BuildContext context,
     double itemHeight = 36,
@@ -63,11 +68,14 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Color background,
+    Color color,
     current,
     start,
     end,
   }) async {
     _showBottom(
+      background: background,
       context: context,
       child: MyDatePicker(
           itemHeight: itemHeight,
@@ -75,6 +83,8 @@ class MyPicker {
           start: start,
           end: end,
           mode: mode,
+          color: color,
+          background: background,
           magnification: magnification,
           squeeze: squeeze,
           offAxisFraction: offAxisFraction,
@@ -96,7 +106,9 @@ class MyPicker {
     current,
     start,
     end,
-    double magnification,
+    Color background,
+    Color color,
+    double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
   }) {
@@ -107,6 +119,8 @@ class MyPicker {
       onChange: onChange,
       current: current,
       squeeze: squeeze,
+      color: color,
+      background: background,
       offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
       magnification: magnification,
@@ -126,7 +140,9 @@ class MyPicker {
     current,
     start,
     end,
-    double magnification,
+    Color background,
+    Color color,
+    double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
   }) {
@@ -136,6 +152,8 @@ class MyPicker {
       mode: MyPickerMode.month,
       onChange: onChange,
       current: current,
+      color: color,
+      background: background,
       squeeze: squeeze,
       offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
@@ -156,7 +174,9 @@ class MyPicker {
     current,
     start,
     end,
-    double magnification,
+    Color background,
+    Color color,
+    double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
   }) {
@@ -166,6 +186,8 @@ class MyPicker {
       mode: MyPickerMode.date,
       onChange: onChange,
       current: current,
+      color: color,
+      background: background,
       isShowHeader: isShowHeader,
       squeeze: squeeze,
       offAxisFraction: offAxisFraction,
@@ -186,7 +208,9 @@ class MyPicker {
     current,
     start,
     end,
-    double magnification,
+    Color background,
+    Color color,
+    double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
   }) {
@@ -197,6 +221,8 @@ class MyPicker {
       onChange: onChange,
       current: current,
       squeeze: squeeze,
+      color: color,
+      background: background,
       offAxisFraction: offAxisFraction,
       isShowHeader: isShowHeader,
       magnification: magnification,
@@ -216,7 +242,9 @@ class MyPicker {
     current,
     start,
     end,
-    double magnification,
+    Color background,
+    Color color,
+    double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
   }) {
@@ -228,6 +256,8 @@ class MyPicker {
       current: current,
       isShowHeader: isShowHeader,
       squeeze: squeeze,
+      color: color,
+      background: background,
       offAxisFraction: offAxisFraction,
       magnification: magnification,
       onCancel: onCancel ?? () {},
@@ -239,6 +269,7 @@ class MyPicker {
 Future _showBottom({
   BuildContext context,
   Widget child,
+  Color background,
 }) async {
   return await showModalBottomSheet(
       context: context,
@@ -249,6 +280,6 @@ Future _showBottom({
         topRight: const Radius.circular(12),
       )),
       clipBehavior: Clip.antiAlias,
-      backgroundColor: Colors.white,
+      backgroundColor: background ?? Colors.white,
       builder: (_) => child);
 }

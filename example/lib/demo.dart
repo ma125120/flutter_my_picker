@@ -90,6 +90,8 @@ class _DemoPageState extends State<DemoPage> {
         _Button('日期时间选择器', () {
           MyPicker.showDateTimePicker(
             context: context,
+            background: Colors.black,
+            color: Colors.white,
             current: date,
             magnification: 1.2,
             squeeze: 1.45,

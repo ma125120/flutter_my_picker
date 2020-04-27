@@ -30,6 +30,8 @@ class MyDatePicker extends StatefulWidget {
   final double magnification;
   final double offAxisFraction;
   final double squeeze;
+  final Color color;
+  final Color background;
 
   MyDatePicker(
       {current,
@@ -42,6 +44,8 @@ class MyDatePicker extends StatefulWidget {
       this.onChange,
       this.onConfirm,
       this.onCancel,
+      this.color,
+      this.background,
       isShowHeader = true,
       this.mode = MyPickerMode.date})
       : this.current =
@@ -436,7 +440,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
               },
               child: CupertinoPicker.builder(
                   key: key,
-                  backgroundColor: Colors.white,
+                  backgroundColor: widget.background ?? Colors.white,
                   scrollController: scrollController,
                   itemExtent: widget.itemHeight, // theme.itemHeight,
                   onSelectedItemChanged: (int index) {
@@ -456,9 +460,9 @@ class _MyDatePickerState extends State<MyDatePicker> {
                       alignment: Alignment.center,
                       child: Text(
                         content,
-                        style: const TextStyle(
-                            color: Color(0xFF000046),
-                            fontSize: 18), // theme.itemStyle,
+                        style: const TextStyle(fontSize: 18).copyWith(
+                            color: widget.color ??
+                                Color(0xFF000046)), // theme.itemStyle,
                         textAlign: TextAlign.start,
                       ),
                     );
@@ -534,6 +538,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // color: widget.color ?? Colors.white,
       height: widget.pickerHeight + (widget.isShowHeader ? headerHeight : 0),
       child: Column(
         children: <Widget>[

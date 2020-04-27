@@ -1,3 +1,7 @@
+## 1.0.3
+* fix magnification 默认值
+* 支持 color 和 background
+
 ## 1.0.2
 * magnification
 * squeeze
