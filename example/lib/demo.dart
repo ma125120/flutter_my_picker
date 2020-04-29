@@ -67,13 +67,13 @@ class _DemoPageState extends State<DemoPage> {
               onChange: _change('yyyy-MM'));
         }),
         _Button('日期选择器', () {
-          MyPicker.showPicker(
+          MyPicker.showDatePicker(
             context: context,
             current: date,
-            mode: MyPickerMode.date,
+            // mode: MyPickerMode.date,
             isShowHeader: false,
-            // start: '2012-08-12',
-            // end: '2025-02-09',
+            start: '2012-08-12',
+            end: MyDate.getNow(),
             onChange: _change('yyyy-MM-dd'),
           );
         }),

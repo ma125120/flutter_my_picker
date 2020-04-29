@@ -1,3 +1,6 @@
+## 1.0.4
+* fix picker start & end 未传入的问题
+
 ## 1.0.3
 * fix magnification 默认值
 * 支持 color 和 background
