@@ -15,11 +15,11 @@
 
 ### 依赖安装
 
-- 已发布到pub，可直接使用版本号进行下载
+- 已发布到pub，可直接使用版本号进行下载，[最新版本号](https://github.com/ma125120/flutter_my_picker/blob/master/pubspec.yaml)
 ```
 dependencies:
   ...
-  flutter_my_picker: ^1.0.3
+  flutter_my_picker: ^1.1.0
 ```
 
 如果你想自己发布包，但是发布的时候报错，可以看这里[发布教程](https://github.com/ma125120/study_note/blob/master/flutter/pub.md)
