@@ -53,6 +53,7 @@ class _DemoPageState extends State<DemoPage> {
         ),
         _Button('年份选择器', () {
           MyPicker.showPicker(
+            title: Text('标题'),
             context: context,
             current: date,
             mode: MyPickerMode.year,
@@ -68,6 +69,7 @@ class _DemoPageState extends State<DemoPage> {
         }),
         _Button('日期选择器', () {
           MyPicker.showDatePicker(
+            header: Center(child: Text('自定义头部'),),
             context: context,
             current: date,
             // mode: MyPickerMode.date,

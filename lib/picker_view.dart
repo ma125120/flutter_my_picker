@@ -32,6 +32,8 @@ class MyDatePicker extends StatefulWidget {
   final double squeeze;
   final Color color;
   final Color background;
+  final Widget header;
+  final Widget title;
 
   MyDatePicker(
       {current,
@@ -47,6 +49,8 @@ class MyDatePicker extends StatefulWidget {
       this.color,
       this.background,
       isShowHeader = true,
+      this.header = null,
+      this.title = null,
       this.mode = MyPickerMode.date})
       : this.current =
             current != null ? MyDate.parse(current) : MyDate.getNow(),
@@ -471,19 +475,20 @@ class _MyDatePickerState extends State<MyDatePicker> {
   }
 
   Widget renderHeader() {
+    if (widget.header != null) return widget.header;
+
     return Row(
       children: <Widget>[
-        FlatButton(
-          textColor: Color(0xFF999999),
-          child: Text('取消'),
+        TextButton(
+          child: Text('取消', style: TextStyle(color: Color(0xFF999999)),),
           onPressed: () {
             widget.onCancel();
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
-          textColor: Theme.of(context).primaryColor,
-          child: Text('确认'),
+        if (widget.title != null) Expanded(child: Center(child: widget.title,)),
+        TextButton(
+          child: Text('确认', style: TextStyle(color: Theme.of(context).primaryColor),),
           onPressed: () {
             onConfirm();
           },
@@ -537,12 +542,13 @@ class _MyDatePickerState extends State<MyDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    bool isShowHeader = widget.isShowHeader || widget.header != null;
     return Container(
       // color: widget.color ?? Colors.white,
-      height: widget.pickerHeight + (widget.isShowHeader ? headerHeight : 0),
+      height: widget.pickerHeight + (isShowHeader ? headerHeight : 0),
       child: Column(
         children: <Widget>[
-          if (widget.isShowHeader) renderHeader(),
+          if (isShowHeader) renderHeader(),
           renderSheet(context),
         ],
       ),

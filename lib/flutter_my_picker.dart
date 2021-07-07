@@ -57,6 +57,9 @@ class MyPicker {
   ///
   /// background 背景颜色
   ///
+  /// title 标题
+  ///
+  /// header 自定义头部
   static showPicker({
     BuildContext context,
     double itemHeight = 36,
@@ -70,6 +73,8 @@ class MyPicker {
     double squeeze = 1,
     Color background,
     Color color,
+    Widget title,
+    Widget header,
     current,
     start,
     end,
@@ -78,6 +83,8 @@ class MyPicker {
       background: background,
       context: context,
       child: MyDatePicker(
+          header: header,
+          title: title,
           itemHeight: itemHeight,
           current: current,
           start: start,
@@ -111,8 +118,12 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Widget title,
+    Widget header,
   }) {
     return MyPicker.showPicker(
+      header: header,
+      title: title,
       context: context,
       itemHeight: itemHeight,
       mode: MyPickerMode.year,
@@ -147,8 +158,12 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Widget title,
+    Widget header,
   }) {
     return MyPicker.showPicker(
+      header: header,
+      title: title,
       context: context,
       itemHeight: itemHeight,
       mode: MyPickerMode.month,
@@ -183,8 +198,12 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Widget title,
+    Widget header,
   }) {
     return MyPicker.showPicker(
+      header: header,
+      title: title,
       context: context,
       itemHeight: itemHeight,
       mode: MyPickerMode.date,
@@ -219,8 +238,12 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Widget title,
+    Widget header,
   }) {
     return MyPicker.showPicker(
+      header: header,
+      title: title,
       context: context,
       itemHeight: itemHeight,
       mode: MyPickerMode.time,
@@ -255,8 +278,12 @@ class MyPicker {
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
+    Widget title,
+    Widget header,
   }) {
     return MyPicker.showPicker(
+      header: header,
+      title: title,
       context: context,
       itemHeight: itemHeight,
       mode: MyPickerMode.dateTime,

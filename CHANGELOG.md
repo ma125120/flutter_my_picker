@@ -1,3 +1,6 @@
+## 1.1.0
+* feat 自定义头部或标题
+
 ## 1.0.4
 * fix picker start & end 未传入的问题
 

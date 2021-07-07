@@ -154,4 +154,13 @@ final double magnification;
 
 /// 被选中的内容偏移，默认 0, 建议设置 0.2
 final double offAxisFraction; 
+
+/// 是否显示头部，默认显示两边的按钮
+final bool isShowHeader;
+
+/// 头部的标题，需配合 isShowHeader 使用
+final Widget title; 
+
+/// 自定义头部，与 isShowHeader 和 title互斥
+final Widget header; 
 ```
