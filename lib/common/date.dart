@@ -22,13 +22,13 @@ class MyDate {
   ///   字符串可为 标准的 DateTime字符串
   ///
   ///   也可以为 20:05 这种只包含时间的字符串
-  static DateTime parse([date]) {
+  static DateTime? parse([date]) {
     return date == null
         ? MyDate.getNow()
         : date.runtimeType == DateTime ? date : MyDate._parse(date);
   }
 
-  static DateTime _parse(String str) {
+  static DateTime? _parse(String str) {
     if (str.contains('-')) return DateTime.tryParse(str);
 
     String prefix = MyDate.format('yyyy-MM-dd');
@@ -45,10 +45,10 @@ class MyDate {
   /// newPattern 日期格式化字符串,比如'yyyy-MM-dd'
   /// date DateTime 或者 字符串 2020-03-17 等
   static String format(String newPattern, [dynamic date]) {
-    return new DateFormat(newPattern).format(MyDate.parse(date));
+    return new DateFormat(newPattern).format(MyDate.parse(date)!);
   }
 
-  static String weekday(DateTime date) {
+  static String? weekday(DateTime date) {
     return weekdays[date.weekday];
   }
 
@@ -59,15 +59,15 @@ class MyDate {
         day1.day == day2.day;
   }
 
-  static bool isInRange(DateTime date, DateTime start, DateTime end) {
+  static bool isInRange(DateTime date, DateTime? start, DateTime? end) {
     if (start == null && end == null) return true;
     if (start == null && end != null)
       return date.isBefore(end) || date.isAtSameMomentAs(end);
     if (end == null && start != null)
       return date.isAfter(start) || date.isAtSameMomentAs(start);
 
-    return (date.isAfter(start) && date.isBefore(end)) ||
+    return (date.isAfter(start!) && date.isBefore(end!)) ||
         date.isAtSameMomentAs(start) ||
-        date.isAtSameMomentAs(end);
+        date.isAtSameMomentAs(end!);
   }
 }
