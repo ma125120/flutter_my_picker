@@ -6,12 +6,12 @@ import './types/index.dart';
 
 typedef DateChangedCallback(DateTime time);
 typedef CancelCallback();
-typedef String StringAtIndexCallBack(int index);
+typedef String? StringAtIndexCallBack(int index);
 
 final padding = EdgeInsets.all(6.0);
 final headerHeight = 48;
-final startTime = null; // DateTime.parse('2018-05-16 08:21');
-final endTime = null; // DateTime.parse('2022-05-06 09:21');
+final dynamic startTime = null; // DateTime.parse('2018-05-16 08:21');
+final dynamic endTime = null; // DateTime.parse('2022-05-06 09:21');
 
 /// current, start, end 传入时间字符串或者DateTime均可
 ///
@@ -19,21 +19,21 @@ class MyDatePicker extends StatefulWidget {
   final DateTime now = new DateTime.now();
 
   final double itemHeight;
-  final DateTime current;
-  final DateTime start;
-  final DateTime end;
-  final DateChangedCallback onChange;
-  final DateChangedCallback onConfirm;
-  final CancelCallback onCancel;
+  final DateTime? current;
+  final DateTime? start;
+  final DateTime? end;
+  final DateChangedCallback? onChange;
+  final DateChangedCallback? onConfirm;
+  final CancelCallback? onCancel;
   final MyPickerMode mode;
   final bool isShowHeader;
   final double magnification;
   final double offAxisFraction;
   final double squeeze;
-  final Color color;
-  final Color background;
-  final Widget header;
-  final Widget title;
+  final Color? color;
+  final Color? background;
+  final Widget? header;
+  final Widget? title;
 
   MyDatePicker(
       {current,
@@ -83,14 +83,14 @@ class _MyDatePickerState extends State<MyDatePicker> {
   int minuteIndex = 0;
 
   /// 上一次回调的时间
-  DateTime _last;
+  DateTime? _last;
   // 如果是手动滚动，不要触发onChange
   bool _isScroll = false;
 
   /// 定时器
-  Timer timer;
+  Timer? timer;
 
-  FixedExtentScrollController yearScrollCtrl,
+  FixedExtentScrollController? yearScrollCtrl,
       monthScrollCtrl,
       dayScrollCtrl,
       hourScrollCtrl,
@@ -113,20 +113,20 @@ class _MyDatePickerState extends State<MyDatePicker> {
 
   @override
   void dispose() {
-    hourScrollCtrl.dispose();
-    minuteScrollCtrl.dispose();
-    dayScrollCtrl.dispose();
-    yearScrollCtrl.dispose();
-    monthScrollCtrl.dispose();
+    hourScrollCtrl!.dispose();
+    minuteScrollCtrl!.dispose();
+    dayScrollCtrl!.dispose();
+    yearScrollCtrl!.dispose();
+    monthScrollCtrl!.dispose();
     super.dispose();
   }
 
   void refreshScrollOffset() {
-    yearIndex = widget.current.year - now.year;
-    monthIndex = widget.current.month - 1;
-    dayIndex = widget.current.day - 1;
-    hourIndex = widget.current.hour;
-    minuteIndex = widget.current.minute;
+    yearIndex = widget.current!.year - now.year;
+    monthIndex = widget.current!.month - 1;
+    dayIndex = widget.current!.day - 1;
+    hourIndex = widget.current!.hour;
+    minuteIndex = widget.current!.minute;
 
     yearScrollCtrl = new FixedExtentScrollController(initialItem: yearIndex);
     monthScrollCtrl = new FixedExtentScrollController(initialItem: monthIndex);
@@ -148,13 +148,13 @@ class _MyDatePickerState extends State<MyDatePicker> {
     }
   }
 
-  String stringIndexByYear(int index) {
+  String? stringIndexByYear(int index) {
     if (index >= -100 && index <= 100) {
       int _year = now.year + index;
       DateTime _nowDate = DateTime(_year);
-      DateTime start =
-          widget.start == null ? null : DateTime(widget.start.year);
-      DateTime end = widget.end == null ? null : DateTime(widget.end.year);
+      DateTime? start =
+          widget.start == null ? null : DateTime(widget.start!.year);
+      DateTime? end = widget.end == null ? null : DateTime(widget.end!.year);
 
       return MyDate.isInRange(_nowDate, start, end)
           ? _year.toString() + '年'
@@ -176,16 +176,16 @@ class _MyDatePickerState extends State<MyDatePicker> {
     }
   }
 
-  String stringIndexByMonth(int index) {
+  String? stringIndexByMonth(int index) {
     if (index >= 0 && index <= 11) {
       int _monthIndex = index + 1;
       DateTime _nowDate = DateTime(now.year + yearIndex, _monthIndex);
-      DateTime start = widget.start == null
+      DateTime? start = widget.start == null
           ? null
-          : DateTime(widget.start.year, widget.start.month);
-      DateTime end = widget.end == null
+          : DateTime(widget.start!.year, widget.start!.month);
+      DateTime? end = widget.end == null
           ? null
-          : DateTime(widget.end.year, widget.end.month);
+          : DateTime(widget.end!.year, widget.end!.month);
 
       return MyDate.isInRange(_nowDate, start, end)
           ? (index + 1).toString() + '月'
@@ -200,11 +200,11 @@ class _MyDatePickerState extends State<MyDatePicker> {
 
     if (widget.end != null) {
       max =
-          now.year + yearIndex == widget.end.year ? (widget.end.month - 1) : 11;
+          now.year + yearIndex == widget.end!.year ? (widget.end!.month - 1) : 11;
     }
     if (widget.start != null) {
-      min = now.year + yearIndex == widget.start.year
-          ? (widget.start.month - 1)
+      min = now.year + yearIndex == widget.start!.year
+          ? (widget.start!.month - 1)
           : 0;
     }
 
@@ -223,33 +223,33 @@ class _MyDatePickerState extends State<MyDatePicker> {
     int min = 0;
 
     if (widget.end != null) {
-      max = (now.year + yearIndex == widget.end.year &&
-              monthIndex == (widget.end.month - 1))
-          ? (widget.end.day - 1)
+      max = (now.year + yearIndex == widget.end!.year &&
+              monthIndex == (widget.end!.month - 1))
+          ? (widget.end!.day - 1)
           : max;
     }
     if (widget.start != null) {
-      min = (now.year + yearIndex == widget.start.year &&
-              monthIndex == (widget.start.month - 1))
-          ? (widget.start.day - 1)
+      min = (now.year + yearIndex == widget.start!.year &&
+              monthIndex == (widget.start!.month - 1))
+          ? (widget.start!.day - 1)
           : min;
     }
 
     scrollItem(dayIndex, dayScrollCtrl, min, max);
   }
 
-  scrollItem(int index, FixedExtentScrollController ctrl, int min, int max) {
+  scrollItem(int index, FixedExtentScrollController? ctrl, int min, int max) {
     if (index > max) {
       setScroll(() {
-        ctrl.jumpToItem(max);
+        ctrl!.jumpToItem(max);
       });
     } else if (index < min) {
       setScroll(() {
-        ctrl.jumpToItem(min);
+        ctrl!.jumpToItem(min);
       });
     } else {
       setScroll(() {
-        ctrl.jumpToItem(index - 1);
+        ctrl!.jumpToItem(index - 1);
         ctrl.jumpToItem(index);
       });
     }
@@ -272,36 +272,36 @@ class _MyDatePickerState extends State<MyDatePicker> {
     int min = 0;
 
     if (widget.end != null) {
-      max = (now.year + yearIndex == widget.end.year &&
-              monthIndex == (widget.end.month - 1) &&
-              dayIndex == (widget.end.day - 1))
-          ? widget.end.hour
+      max = (now.year + yearIndex == widget.end!.year &&
+              monthIndex == (widget.end!.month - 1) &&
+              dayIndex == (widget.end!.day - 1))
+          ? widget.end!.hour
           : max;
     }
     if (widget.start != null) {
-      min = (now.year + yearIndex == widget.start.year &&
-              monthIndex == (widget.start.month - 1) &&
-              dayIndex == (widget.start.day - 1))
-          ? widget.start.hour
+      min = (now.year + yearIndex == widget.start!.year &&
+              monthIndex == (widget.start!.month - 1) &&
+              dayIndex == (widget.start!.day - 1))
+          ? widget.start!.hour
           : min;
     }
 
     scrollItem(hourIndex, hourScrollCtrl, min, max);
   }
 
-  String stringIndexByDay(int index) {
+  String? stringIndexByDay(int index) {
     int days = getDays();
 
     if (index >= 0 && index < days) {
       int _index = index + 1;
       DateTime _nowDate =
           DateTime(now.year + yearIndex, monthIndex + 1, _index);
-      DateTime start = widget.start == null
+      DateTime? start = widget.start == null
           ? null
-          : DateTime(widget.start.year, widget.start.month, widget.start.day);
-      DateTime end = widget.end == null
+          : DateTime(widget.start!.year, widget.start!.month, widget.start!.day);
+      DateTime? end = widget.end == null
           ? null
-          : DateTime(widget.end.year, widget.end.month, widget.end.day);
+          : DateTime(widget.end!.year, widget.end!.month, widget.end!.day);
 
       return MyDate.isInRange(_nowDate, start, end)
           ? _index.toString() + '日'
@@ -327,37 +327,37 @@ class _MyDatePickerState extends State<MyDatePicker> {
     int min = 0;
 
     if (widget.end != null) {
-      max = (now.year + yearIndex == widget.end.year &&
-              monthIndex == (widget.end.month - 1) &&
-              dayIndex == (widget.end.day - 1) &&
-              hourIndex == (widget.end.hour))
-          ? widget.end.minute
+      max = (now.year + yearIndex == widget.end!.year &&
+              monthIndex == (widget.end!.month - 1) &&
+              dayIndex == (widget.end!.day - 1) &&
+              hourIndex == (widget.end!.hour))
+          ? widget.end!.minute
           : max;
     }
     if (widget.start != null) {
-      min = (now.year + yearIndex == widget.start.year &&
-              monthIndex == (widget.start.month - 1) &&
-              dayIndex == (widget.start.day - 1) &&
-              hourIndex == (widget.start.hour))
-          ? widget.start.minute
+      min = (now.year + yearIndex == widget.start!.year &&
+              monthIndex == (widget.start!.month - 1) &&
+              dayIndex == (widget.start!.day - 1) &&
+              hourIndex == (widget.start!.hour))
+          ? widget.start!.minute
           : min;
     }
 
     scrollItem(minuteIndex, minuteScrollCtrl, min, max);
   }
 
-  String stringIndexByHour(int index) {
+  String? stringIndexByHour(int index) {
     if (index >= 0 && index < 24) {
       DateTime _nowDate =
           DateTime(now.year + yearIndex, monthIndex + 1, dayIndex + 1, index);
-      DateTime start = widget.start == null
+      DateTime? start = widget.start == null
           ? null
-          : DateTime(widget.start.year, widget.start.month, widget.start.day,
-              widget.start.hour);
-      DateTime end = widget.end == null
+          : DateTime(widget.start!.year, widget.start!.month, widget.start!.day,
+              widget.start!.hour);
+      DateTime? end = widget.end == null
           ? null
-          : DateTime(widget.end.year, widget.end.month, widget.end.day,
-              widget.end.hour);
+          : DateTime(widget.end!.year, widget.end!.month, widget.end!.day,
+              widget.end!.hour);
 
       return MyDate.isInRange(_nowDate, start, end)
           ? index.toString().padLeft(2, '0') + '时'
@@ -374,18 +374,18 @@ class _MyDatePickerState extends State<MyDatePicker> {
     });
   }
 
-  String stringIndexByMinute(int index) {
+  String? stringIndexByMinute(int index) {
     if (index >= 0 && index < 60) {
       DateTime _nowDate = DateTime(
           now.year + yearIndex, monthIndex + 1, dayIndex + 1, hourIndex, index);
-      DateTime start = widget.start == null
+      DateTime? start = widget.start == null
           ? null
-          : DateTime(widget.start.year, widget.start.month, widget.start.day,
-              widget.start.hour, widget.start.minute);
-      DateTime end = widget.end == null
+          : DateTime(widget.start!.year, widget.start!.month, widget.start!.day,
+              widget.start!.hour, widget.start!.minute);
+      DateTime? end = widget.end == null
           ? null
-          : DateTime(widget.end.year, widget.end.month, widget.end.day,
-              widget.end.hour, widget.end.minute);
+          : DateTime(widget.end!.year, widget.end!.month, widget.end!.day,
+              widget.end!.hour, widget.end!.minute);
 
       return MyDate.isInRange(_nowDate, start, end)
           ? index.toString().padLeft(2, '0') + '分'
@@ -406,7 +406,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
     timer = Timer(Duration(milliseconds: 5), () {
       if (_last != date && dayIndex < days && !_isScroll) {
         _last = date;
-        widget.onChange(date);
+        widget.onChange!(date);
       }
     });
   }
@@ -414,16 +414,16 @@ class _MyDatePickerState extends State<MyDatePicker> {
   onConfirm() {
     DateTime date = new DateTime(now.year + yearIndex, monthIndex + 1,
         dayIndex + 1, hourIndex, minuteIndex);
-    widget.onConfirm(date);
+    widget.onConfirm!(date);
     Navigator.of(context).pop();
   }
 
   Widget _renderColumnView(
-      {ValueKey key,
-      StringAtIndexCallBack stringAtIndexCB,
-      ScrollController scrollController,
-      ValueChanged<int> selectedChangedWhenScrolling,
-      ValueChanged<int> selectedChangedWhenScrollEnd}) {
+      {ValueKey? key,
+      StringAtIndexCallBack? stringAtIndexCB,
+      ScrollController? scrollController,
+      ValueChanged<int>? selectedChangedWhenScrolling,
+      ValueChanged<int>? selectedChangedWhenScrollEnd}) {
     return Expanded(
       // flex: layoutProportion,
       child: Container(
@@ -436,7 +436,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
                     selectedChangedWhenScrollEnd != null &&
                     notification is ScrollEndNotification &&
                     notification.metrics is FixedExtentMetrics) {
-                  final FixedExtentMetrics metrics = notification.metrics;
+                  final FixedExtentMetrics metrics = notification.metrics as FixedExtentMetrics;
                   final int currentItemIndex = metrics.itemIndex;
                   selectedChangedWhenScrollEnd(currentItemIndex);
                 }
@@ -445,17 +445,17 @@ class _MyDatePickerState extends State<MyDatePicker> {
               child: CupertinoPicker.builder(
                   key: key,
                   backgroundColor: widget.background ?? Colors.white,
-                  scrollController: scrollController,
+                  scrollController: scrollController as FixedExtentScrollController?,
                   itemExtent: widget.itemHeight, // theme.itemHeight,
                   onSelectedItemChanged: (int index) {
-                    selectedChangedWhenScrolling(index);
+                    selectedChangedWhenScrolling!(index);
                   },
                   useMagnifier: true,
                   magnification: widget.magnification,
                   squeeze: widget.squeeze,
                   offAxisFraction: widget.offAxisFraction,
                   itemBuilder: (BuildContext context, int index) {
-                    final content = stringAtIndexCB(index);
+                    final content = stringAtIndexCB!(index);
                     if (content == null) {
                       return null;
                     }
@@ -474,7 +474,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
     );
   }
 
-  Widget renderHeader() {
+  Widget? renderHeader() {
     if (widget.header != null) return widget.header;
 
     return Row(
@@ -482,7 +482,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
         TextButton(
           child: Text('取消', style: TextStyle(color: Color(0xFF999999)),),
           onPressed: () {
-            widget.onCancel();
+            widget.onCancel!();
             Navigator.of(context).pop();
           },
         ),
@@ -548,7 +548,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
       height: widget.pickerHeight + (isShowHeader ? headerHeight : 0),
       child: Column(
         children: <Widget>[
-          if (isShowHeader) renderHeader(),
+          if (isShowHeader) renderHeader()!,
           renderSheet(context),
         ],
       ),

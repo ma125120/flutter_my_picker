@@ -61,20 +61,20 @@ class MyPicker {
   ///
   /// header 自定义头部
   static showPicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
     MyPickerMode mode = MyPickerMode.date,
-    DateChangedCallback onChange,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
-    bool isShowHeader = true,
+    DateChangedCallback? onChange,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
+    bool? isShowHeader = true,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Color background,
-    Color color,
-    Widget title,
-    Widget header,
+    Color? background,
+    Color? color,
+    Widget? title,
+    Widget? header,
     current,
     start,
     end,
@@ -104,22 +104,22 @@ class MyPicker {
 
   /// 年份选择器
   static showYearPicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
-    DateChangedCallback onChange,
-    bool isShowHeader,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
+    DateChangedCallback? onChange,
+    bool? isShowHeader,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
     current,
     start,
     end,
-    Color background,
-    Color color,
+    Color? background,
+    Color? color,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Widget title,
-    Widget header,
+    Widget? title,
+    Widget? header,
   }) {
     return MyPicker.showPicker(
       header: header,
@@ -144,22 +144,22 @@ class MyPicker {
 
   /// 月份选择器
   static showMonthPicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
-    DateChangedCallback onChange,
-    bool isShowHeader,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
+    DateChangedCallback? onChange,
+    bool? isShowHeader,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
     current,
     start,
     end,
-    Color background,
-    Color color,
+    Color? background,
+    Color? color,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Widget title,
-    Widget header,
+    Widget? title,
+    Widget? header,
   }) {
     return MyPicker.showPicker(
       header: header,
@@ -184,22 +184,22 @@ class MyPicker {
 
   /// 日期选择器
   static showDatePicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
-    DateChangedCallback onChange,
-    bool isShowHeader,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
+    DateChangedCallback? onChange,
+    bool? isShowHeader,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
     current,
     start,
     end,
-    Color background,
-    Color color,
+    Color? background,
+    Color? color,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Widget title,
-    Widget header,
+    Widget? title,
+    Widget? header,
   }) {
     return MyPicker.showPicker(
       header: header,
@@ -224,22 +224,22 @@ class MyPicker {
 
   /// 时间选择器
   static showTimePicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
-    DateChangedCallback onChange,
-    bool isShowHeader,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
+    DateChangedCallback? onChange,
+    bool? isShowHeader,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
     current,
     start,
     end,
-    Color background,
-    Color color,
+    Color? background,
+    Color? color,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Widget title,
-    Widget header,
+    Widget? title,
+    Widget? header,
   }) {
     return MyPicker.showPicker(
       header: header,
@@ -264,22 +264,22 @@ class MyPicker {
 
   /// 日期时间选择器
   static showDateTimePicker({
-    BuildContext context,
+    required BuildContext context,
     double itemHeight = 36,
-    DateChangedCallback onChange,
-    bool isShowHeader,
-    DateChangedCallback onConfirm,
-    CancelCallback onCancel,
+    DateChangedCallback? onChange,
+    bool? isShowHeader,
+    DateChangedCallback? onConfirm,
+    CancelCallback? onCancel,
     current,
     start,
     end,
-    Color background,
-    Color color,
+    Color? background,
+    Color? color,
     double magnification = 1,
     double offAxisFraction = 0,
     double squeeze = 1,
-    Widget title,
-    Widget header,
+    Widget? title,
+    Widget? header,
   }) {
     return MyPicker.showPicker(
       header: header,
@@ -304,9 +304,9 @@ class MyPicker {
 }
 
 Future _showBottom({
-  BuildContext context,
-  Widget child,
-  Color background,
+  required BuildContext context,
+  Widget? child,
+  Color? background,
 }) async {
   return await showModalBottomSheet(
       context: context,
@@ -318,5 +318,5 @@ Future _showBottom({
       )),
       clipBehavior: Clip.antiAlias,
       backgroundColor: background ?? Colors.white,
-      builder: (_) => child);
+      builder: (_) => child!);
 }
