@@ -8,8 +8,8 @@ class DemoPage extends StatefulWidget {
 }
 
 class _DemoPageState extends State<DemoPage> {
-  DateTime date;
-  String dateStr;
+  DateTime? date;
+  String? dateStr;
 
   @override
   void initState() {
